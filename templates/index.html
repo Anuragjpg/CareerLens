@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerLens - AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 CareerLens</h1>
+            <p class="subtitle">AI-Powered Resume Analyzer & Skill Gap Finder</p>
+            <p class="tagline">Get instant feedback on your resume and discover what skills you need</p>
+        </div>
+
+        <!-- Upload Form -->
+        <form action="/analyze" method="post" enctype="multipart/form-data" id="uploadForm">
+
+            <div class="form-group">
+                <label for="resume">📄 Upload Your Resume (PDF only)</label>
+                <input type="file" id="resume" name="resume" accept=".pdf" required>
+                <small class="hint">Max file size: 10 MB</small>
+            </div>
+
+            <div class="form-group">
+                <label for="job_role">💼 Enter Your Target Job Role</label>
+                <input type="text" id="job_role" name="job_role"
+                       placeholder="e.g. Data Analyst, Web Developer, Python Developer"
+                       required>
+                <small class="hint">Try: Data Analyst, Web Developer, Frontend Developer, Backend Developer, Full Stack Developer, Data Scientist, Python Developer</small>
+            </div>
+
+            <button type="submit" id="submitBtn">🔍 Analyze My Resume</button>
+
+        </form>
+
+        <!-- Loading -->
+        <div class="loading" id="loading" style="display:none;">
+            <div class="spinner"></div>
+            <p>Analyzing your resume with AI... Please wait 10-15 seconds</p>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <h3>What You'll Get:</h3>
+            <ul>
+                <li>✅ Resume Score out of 10</li>
+                <li>✅ ATS Compatibility Score</li>
+                <li>✅ Skill Gap Analysis</li>
+                <li>✅ Personalized Learning Roadmap</li>
+                <li>✅ Free Course Recommendations</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built by <strong>Anurag Kushwaha</strong> | BCA Final Year Project</p>
+            <p>Jagan College of Arts, Science and Commerce, Kanpur</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loading when form submits
+        document.getElementById('uploadForm').addEventListener('submit', function() {
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

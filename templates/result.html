@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result - CareerLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container result-container">
+
+        <!-- Header -->
+        <h1>📊 CareerLens Analysis Report</h1>
+        <p class="result-meta"><strong>🎯 Target Job:</strong> {{ job_role }}</p>
+        <p class="result-meta"><strong>📄 Resume:</strong> {{ filename }}</p>
+        <p class="result-meta"><strong>📝 Word Count:</strong> {{ word_count }}</p>
+
+        <!-- ==================== -->
+        <!-- AI SCORE CARDS -->
+        <!-- ==================== -->
+        {% if ai and not ai.ai_error %}
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="score-label">Resume Score</div>
+                <div class="score-value">{{ ai.resume_score }}/10</div>
+            </div>
+            <div class="score-card card-blue">
+                <div class="score-label">ATS Score</div>
+                <div class="score-value">{{ ai.ats_score }}%</div>
+            </div>
+            <div class="score-card card-green">
+                <div class="score-label">Skill Match</div>
+                <div class="score-value">{{ analysis.match_percentage }}%</div>
+            </div>
+        </div>
+
+        <!-- AI Summary -->
+        {% if ai.summary %}
+        <div class="summary-box">
+            💬 <strong>AI Summary:</strong> {{ ai.summary }}
+        </div>
+        {% endif %}
+
+        <!-- Strengths -->
+        <h3>💪 Your Strengths</h3>
+        <ul class="feedback-list good">
+            {% for item in ai.strengths %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Weaknesses -->
+        <h3>⚠️ Areas for Improvement</h3>
+        <ul class="feedback-list bad">
+            {% for item in ai.weaknesses %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Suggestions -->
+        <h3>💡 Specific Suggestions to Fix</h3>
+        <ul class="feedback-list suggestions">
+            {% for item in ai.suggestions %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+
+        {% elif ai and ai.ai_error %}
+        <div class="warning-box">
+            ⚠️ <strong>AI Analysis Error:</strong> {{ ai.error_message }}
+            <p style="margin-top:10px; font-size:13px;">Skill analysis below still works without AI.</p>
+        </div>
+        {% endif %}
+
+        <!-- ==================== -->
+        <!-- SKILL ANALYSIS -->
+        <!-- ==================== -->
+
+        {% if not analysis.job_found %}
+        <div class="warning-box">
+            ⚠️ {{ analysis.message }}
+        </div>
+        {% endif %}
+
+        {% if analysis.matched %}
+        <h3>✅ Skills You Have ({{ analysis.matched|length }})</h3>
+        <div class="skill-list">
+            {% for skill in analysis.matched %}
+                <span class="skill matched">✓ {{ skill }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if analysis.missing %}
+        <h3>❌ Skills You Need to Learn ({{ analysis.missing|length }})</h3>
+        <div class="skill-list">
+            {% for skill in analysis.missing %}
+                <span class="skill missing">✗ {{ skill }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ==================== -->
+        <!-- LEARNING ROADMAP -->
+        <!-- ==================== -->
+        {% if ai and not ai.ai_error and ai.roadmap %}
+        <h3>🗺️ Your Personalized Learning Roadmap</h3>
+        <div class="roadmap">
+            {% for item in ai.roadmap %}
+            <div class="roadmap-item">
+                <div class="roadmap-header">
+                    <span class="roadmap-skill">{{ loop.index }}. {{ item.skill }}</span>
+                    <span class="priority priority-{{ item.priority|lower }}">{{ item.priority }}</span>
+                </div>
+                <p class="roadmap-resource">📚 <strong>Course:</strong> {{ item.resource }}</p>
+                <p class="roadmap-duration">⏱️ <strong>Duration:</strong> {{ item.duration }}</p>
+                {% if item.why %}
+                <p class="roadmap-why">💡 <strong>Why:</strong> {{ item.why }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ==================== -->
+        <!-- ALL RESUME SKILLS -->
+        <!-- ==================== -->
+        <details style="margin-top: 30px;">
+            <summary class="details-summary">
+                📝 View All Skills Found in Resume ({{ resume_skills|length }})
+            </summary>
+            <div class="skill-list" style="margin-top: 10px;">
+                {% for skill in resume_skills %}
+                    <span class="skill all">{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </details>
+
+        <!-- ==================== -->
+        <!-- RAW RESUME TEXT -->
+        <!-- ==================== -->
+        <details style="margin-top: 15px;">
+            <summary class="details-summary">
+                👁️ View Extracted Resume Text
+            </summary>
+            <div class="text-box" style="margin-top: 10px;">{{ resume_text }}</div>
+        </details>
+
+        <!-- Back Button -->
+        <a href="/" class="back-link">← Analyze Another Resume</a>
+    </div>
+</body>
+</html>
