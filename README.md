@@ -1,39 +1,73 @@
-# CareerLens
+# 🎯 CareerLens
 
-AI-powered resume analyzer and skill gap finder built with Flask and Gemini.
+AI-Powered Resume Analyzer & Skill Gap Finder for Students & Freshers
 
-## Setup
+## 📌 Overview
 
-1. Create and activate a virtual environment.
+CareerLens is a smart web application that helps students analyze their resumes, identify missing skills, and become job-ready faster using AI.
 
-```powershell
-python -m venv venv
-venv\Scripts\activate
-```
+Users can upload a PDF resume and enter their target job role (e.g., Data Analyst, Web Developer). The system then analyzes the resume and provides:
 
-2. Install dependencies.
+- ✅ Resume Score
+- ✅ ATS Compatibility Score
+- ✅ Skill Match Percentage
+- ✅ Missing Skills Analysis
+- ✅ Personalized Suggestions
+- ✅ Learning Roadmap with Free Resources
 
-```powershell
-pip install -r requirements.txt
-```
+---
 
-3. Create a `.env` file in the project root.
+## 🚀 Features
 
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+### 📄 Resume Upload
+Upload resume in PDF format.
 
-4. Run the app.
+### 🤖 AI Resume Analysis
+Uses Claude AI to analyze:
+- Resume quality
+- ATS friendliness
+- Strengths & weaknesses
+- Improvement suggestions
 
-```powershell
-python app.py
-```
+### 🎯 Skill Gap Finder
+Compares resume skills with industry-required skills for target job roles.
 
-Open `http://127.0.0.1:5000`.
+### 🗺️ Learning Roadmap
+Provides free learning resources and skill priorities.
 
-## Notes
+### 📊 Clean Dashboard
+Displays all results in a modern UI.
 
-- Uploads must be PDF files.
-- Maximum upload size is 10 MB.
-- AI analysis needs a valid Gemini API key.
-- Skill matching still works if the API key is missing.
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python | Backend logic |
+| Flask | Web framework |
+| HTML/CSS | Frontend |
+| pdfplumber | PDF text extraction |
+| Claude AI API | AI analysis |
+| JavaScript | Frontend interactions |
+
+---
+
+## 📂 Project Structure
+
+```bash
+CareerLens/
+├── uploads/
+├── templates/
+│   ├── index.html
+│   ├── result.html
+│   └── error.html
+├── static/
+│   └── style.css
+├── utils/
+│   ├── resume_parser.py
+│   ├── skill_matcher.py
+│   └── ai_analyzer.py
+├── app.py
+├── requirements.txt
+└── .env
