@@ -42,14 +42,54 @@ Displays all results in a modern UI.
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| Python | Backend logic |
-| Flask | Web framework |
-| HTML/CSS | Frontend |
-| pdfplumber | PDF text extraction |
-| Claude AI API | AI analysis |
-| JavaScript | Frontend interactions |
+- 🐍 **Python** — Core backend, data processing, and app logic
+- 🌐 **Flask** — Lightweight web server, routing, and templating
+- 🎨 **HTML / CSS** — Clean responsive UI and styling
+- 📄 **pdfplumber** — Reliable PDF resume parsing and text extraction
+- 🤖 **Gemini AI** — AI-driven resume scoring, suggestions, and insights
+- 💻 **JavaScript** — Interactive frontend updates and smooth UX
+
+---
+
+## 🚀 Installation
+
+1. Create and activate a virtual environment.
+
+```powershell
+python -m venv venv
+venv\Scripts\activate
+```
+
+2. Install dependencies.
+
+```powershell
+pip install -r requirements.txt
+```
+
+3. Create a `.env` file in the project root with your Gemini API key.
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+4. Run the app.
+
+```powershell
+python app.py
+```
+
+5. Open the app in your browser.
+
+```text
+http://127.0.0.1:5000
+```
+
+### Notes
+
+- Uploads must be PDF files.
+- Maximum upload size is 10 MB.
+- AI analysis needs a valid Gemini API key.
+- Skill matching still works if the API key is missing.
 
 ---
 
@@ -71,3 +111,4 @@ CareerLens/
 ├── app.py
 ├── requirements.txt
 └── .env
+
