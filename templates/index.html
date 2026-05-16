@@ -1,73 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareerLens - AI Resume Analyzer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
+{% extends "base.html" %}
 
-        <!-- Header -->
-        <div class="header">
-            <h1>🎯 CareerLens</h1>
-            <p class="subtitle">AI-Powered Resume Analyzer & Skill Gap Finder</p>
-            <p class="tagline">Get instant feedback on your resume and discover what skills you need</p>
+{% block content %}
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">AI resume analyzer</p>
+            <h1>Sharper resume feedback before you apply.</h1>
+            <p class="hero-lede">Upload a PDF resume, choose a target role, and get a clean report with ATS fit, missing skills, practical suggestions, and a learning roadmap.</p>
+
+            <div class="hero-stats" aria-label="CareerLens highlights">
+                <div>
+                    <strong>10 MB</strong>
+                    <span>PDF upload</span>
+                </div>
+                <div>
+                    <strong>3 scores</strong>
+                    <span>Resume, ATS, match</span>
+                </div>
+                <div>
+                    <strong>Roadmap</strong>
+                    <span>Next skills to learn</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Upload Form -->
-        <form action="/analyze" method="post" enctype="multipart/form-data" id="uploadForm">
-
-            <div class="form-group">
-                <label for="resume">📄 Upload Your Resume (PDF only)</label>
-                <input type="file" id="resume" name="resume" accept=".pdf" required>
-                <small class="hint">Max file size: 10 MB</small>
+        <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data" id="uploadForm" class="analyzer-card" aria-labelledby="analyzer-title">
+            <div class="form-header" id="analyzer">
+                <p class="eyebrow">Start here</p>
+                <h2 id="analyzer-title">Analyze your resume</h2>
+                <p>PDF resumes only. Your report appears after processing.</p>
             </div>
 
             <div class="form-group">
-                <label for="job_role">💼 Enter Your Target Job Role</label>
+                <label for="resume">Resume PDF</label>
+                <label class="file-drop" for="resume" data-file-drop>
+                    <span class="file-icon" aria-hidden="true">PDF</span>
+                    <span>
+                        <strong data-file-name>Choose your resume</strong>
+                        <small>Maximum file size is 10 MB</small>
+                    </span>
+                </label>
+                <input class="sr-only-file" type="file" id="resume" name="resume" accept=".pdf" required>
+            </div>
+
+            <div class="form-group">
+                <label for="job_role">Target job role</label>
                 <input type="text" id="job_role" name="job_role"
-                       placeholder="e.g. Data Analyst, Web Developer, Python Developer"
+                       placeholder="Example: Data Analyst, Frontend Developer"
                        required>
-                <small class="hint">Try: Data Analyst, Web Developer, Frontend Developer, Backend Developer, Full Stack Developer, Data Scientist, Python Developer</small>
+                <small class="hint">Try a clear role title for better skill matching.</small>
             </div>
 
-            <button type="submit" id="submitBtn">🔍 Analyze My Resume</button>
+            <button type="submit" id="submitBtn" class="primary-action">
+                <span>Analyze resume</span>
+                <span aria-hidden="true">-&gt;</span>
+            </button>
 
+            <div class="loading" id="loading" hidden>
+                <div class="spinner" aria-hidden="true"></div>
+                <p>Analyzing your resume. This usually takes a few seconds.</p>
+            </div>
         </form>
+    </div>
+</section>
 
-        <!-- Loading -->
-        <div class="loading" id="loading" style="display:none;">
-            <div class="spinner"></div>
-            <p>Analyzing your resume with AI... Please wait 10-15 seconds</p>
+<section class="section-block" id="features">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Report output</p>
+            <h2>Everything a fresher needs to improve faster.</h2>
         </div>
-
-        <!-- Features -->
-        <div class="features">
-            <h3>What You'll Get:</h3>
-            <ul>
-                <li>✅ Resume Score out of 10</li>
-                <li>✅ ATS Compatibility Score</li>
-                <li>✅ Skill Gap Analysis</li>
-                <li>✅ Personalized Learning Roadmap</li>
-                <li>✅ Free Course Recommendations</li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>Built by <strong>Anurag Kushwaha</strong> | BCA Final Year Project</p>
-            <p>Jagan College of Arts, Science and Commerce, Kanpur</p>
+        <div class="feature-grid">
+            <article class="feature-card">
+                <span class="feature-mark">01</span>
+                <h3>Resume scoring</h3>
+                <p>See a clear resume score and ATS compatibility score in one dashboard.</p>
+            </article>
+            <article class="feature-card">
+                <span class="feature-mark">02</span>
+                <h3>Skill gap analysis</h3>
+                <p>Compare resume skills against the target role and spot missing abilities.</p>
+            </article>
+            <article class="feature-card">
+                <span class="feature-mark">03</span>
+                <h3>Learning roadmap</h3>
+                <p>Get a prioritized list of skills, resources, and realistic duration guidance.</p>
+            </article>
         </div>
     </div>
+</section>
 
-    <script>
-        // Show loading when form submits
-        document.getElementById('uploadForm').addEventListener('submit', function() {
-            document.getElementById('submitBtn').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
-        });
-    </script>
-</body>
-</html>
+<section class="process-band" id="process">
+    <div class="container process-grid">
+        <div>
+            <p class="eyebrow">Workflow</p>
+            <h2>From upload to action plan.</h2>
+        </div>
+        <ol class="process-list">
+            <li><span>Upload PDF</span></li>
+            <li><span>Choose role</span></li>
+            <li><span>Review scores</span></li>
+            <li><span>Close skill gaps</span></li>
+        </ol>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function() {
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('loading').hidden = false;
+    });
+</script>
+{% endblock %}

@@ -6,6 +6,7 @@ Author: Anurag Kushwaha
 College: Jagan College of Arts, Science and Commerce, Kanpur
 """
 
+from datetime import datetime
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
@@ -19,6 +20,10 @@ from utils.ai_analyzer import analyze_resume_with_ai
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB max file size
+
+@app.context_processor
+def inject_year():
+    return {'year': datetime.now().year}
 
 # Create uploads folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

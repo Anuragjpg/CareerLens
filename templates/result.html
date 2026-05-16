@@ -1,24 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Result - CareerLens</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+<section class="result-shell">
     <div class="container result-container">
+        <div class="result-hero">
+            <div>
+                <p class="eyebrow">Analysis report</p>
+                <h1>CareerLens report</h1>
+                <p class="hero-lede">A focused read on your resume quality, role fit, and next learning priorities.</p>
+            </div>
+            <div class="meta-panel" aria-label="Report details">
+                <div>
+                    <span>Target job</span>
+                    <strong>{{ job_role }}</strong>
+                </div>
+                <div>
+                    <span>Resume</span>
+                    <strong>{{ filename }}</strong>
+                </div>
+                <div>
+                    <span>Word count</span>
+                    <strong>{{ word_count }}</strong>
+                </div>
+            </div>
+        </div>
 
-        <!-- Header -->
-        <h1>📊 CareerLens Analysis Report</h1>
-        <p class="result-meta"><strong>🎯 Target Job:</strong> {{ job_role }}</p>
-        <p class="result-meta"><strong>📄 Resume:</strong> {{ filename }}</p>
-        <p class="result-meta"><strong>📝 Word Count:</strong> {{ word_count }}</p>
-
-        <!-- ==================== -->
-        <!-- AI SCORE CARDS -->
-        <!-- ==================== -->
         {% if ai and not ai.ai_error %}
+        {% if ai.fallback %}
+        <div class="warning-box">
+            <strong>AI fallback mode:</strong> {{ ai.notice }}
+        </div>
+        {% endif %}
+
         <div class="score-grid">
             <div class="score-card">
                 <div class="score-label">Resume Score</div>
@@ -34,120 +47,129 @@
             </div>
         </div>
 
-        <!-- AI Summary -->
         {% if ai.summary %}
         <div class="summary-box">
-            💬 <strong>AI Summary:</strong> {{ ai.summary }}
+            <strong>AI summary</strong>
+            <p>{{ ai.summary }}</p>
         </div>
         {% endif %}
 
-        <!-- Strengths -->
-        <h3>💪 Your Strengths</h3>
-        <ul class="feedback-list good">
-            {% for item in ai.strengths %}
-                <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
+        <div class="feedback-grid">
+            <section class="insight-panel">
+                <h2>Your strengths</h2>
+                <ul class="feedback-list good">
+                    {% for item in ai.strengths %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
 
-        <!-- Weaknesses -->
-        <h3>⚠️ Areas for Improvement</h3>
-        <ul class="feedback-list bad">
-            {% for item in ai.weaknesses %}
-                <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
+            <section class="insight-panel">
+                <h2>Areas to improve</h2>
+                <ul class="feedback-list bad">
+                    {% for item in ai.weaknesses %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
 
-        <!-- Suggestions -->
-        <h3>💡 Specific Suggestions to Fix</h3>
-        <ul class="feedback-list suggestions">
-            {% for item in ai.suggestions %}
-                <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
+            <section class="insight-panel wide">
+                <h2>Specific suggestions</h2>
+                <ul class="feedback-list suggestions">
+                    {% for item in ai.suggestions %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
 
         {% elif ai and ai.ai_error %}
         <div class="warning-box">
-            ⚠️ <strong>AI Analysis Error:</strong> {{ ai.error_message }}
-            <p style="margin-top:10px; font-size:13px;">Skill analysis below still works without AI.</p>
+            <strong>AI analysis error:</strong> {{ ai.error_message }}
+            <p>Skill analysis below still works without AI.</p>
         </div>
         {% endif %}
-
-        <!-- ==================== -->
-        <!-- SKILL ANALYSIS -->
-        <!-- ==================== -->
 
         {% if not analysis.job_found %}
         <div class="warning-box">
-            ⚠️ {{ analysis.message }}
+            {{ analysis.message }}
         </div>
         {% endif %}
 
-        {% if analysis.matched %}
-        <h3>✅ Skills You Have ({{ analysis.matched|length }})</h3>
-        <div class="skill-list">
-            {% for skill in analysis.matched %}
-                <span class="skill matched">✓ {{ skill }}</span>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {% if analysis.missing %}
-        <h3>❌ Skills You Need to Learn ({{ analysis.missing|length }})</h3>
-        <div class="skill-list">
-            {% for skill in analysis.missing %}
-                <span class="skill missing">✗ {{ skill }}</span>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- ==================== -->
-        <!-- LEARNING ROADMAP -->
-        <!-- ==================== -->
-        {% if ai and not ai.ai_error and ai.roadmap %}
-        <h3>🗺️ Your Personalized Learning Roadmap</h3>
-        <div class="roadmap">
-            {% for item in ai.roadmap %}
-            <div class="roadmap-item">
-                <div class="roadmap-header">
-                    <span class="roadmap-skill">{{ loop.index }}. {{ item.skill }}</span>
-                    <span class="priority priority-{{ item.priority|lower }}">{{ item.priority }}</span>
+        <section class="skills-section">
+            <div class="section-heading compact">
+                <p class="eyebrow">Skill match</p>
+                <h2>Skills found and gaps to close</h2>
+            </div>
+            <div class="skill-columns">
+                {% if analysis.matched %}
+                <div class="skill-panel">
+                    <h3>Skills you have <span>{{ analysis.matched|length }}</span></h3>
+                    <div class="skill-list">
+                        {% for skill in analysis.matched %}
+                            <span class="skill matched">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
-                <p class="roadmap-resource">📚 <strong>Course:</strong> {{ item.resource }}</p>
-                <p class="roadmap-duration">⏱️ <strong>Duration:</strong> {{ item.duration }}</p>
-                {% if item.why %}
-                <p class="roadmap-why">💡 <strong>Why:</strong> {{ item.why }}</p>
+                {% endif %}
+
+                {% if analysis.missing %}
+                <div class="skill-panel">
+                    <h3>Skills to learn <span>{{ analysis.missing|length }}</span></h3>
+                    <div class="skill-list">
+                        {% for skill in analysis.missing %}
+                            <span class="skill missing">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
                 {% endif %}
             </div>
-            {% endfor %}
-        </div>
+        </section>
+
+        {% if ai and not ai.ai_error and ai.roadmap %}
+        <section class="roadmap-section">
+            <div class="section-heading compact">
+                <p class="eyebrow">Roadmap</p>
+                <h2>Personalized learning plan</h2>
+            </div>
+            <div class="roadmap">
+                {% for item in ai.roadmap %}
+                <div class="roadmap-item">
+                    <div class="roadmap-header">
+                        <span class="roadmap-step">{{ "%02d"|format(loop.index) }}</span>
+                        <span class="roadmap-skill">{{ item.skill }}</span>
+                        <span class="priority priority-{{ item.priority|lower }}">{{ item.priority }}</span>
+                    </div>
+                    <p class="roadmap-resource"><strong>Course:</strong> {{ item.resource }}</p>
+                    <p class="roadmap-duration"><strong>Duration:</strong> {{ item.duration }}</p>
+                    {% if item.why %}
+                    <p class="roadmap-why"><strong>Why:</strong> {{ item.why }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
         {% endif %}
 
-        <!-- ==================== -->
-        <!-- ALL RESUME SKILLS -->
-        <!-- ==================== -->
-        <details style="margin-top: 30px;">
+        <details>
             <summary class="details-summary">
-                📝 View All Skills Found in Resume ({{ resume_skills|length }})
+                View all skills found in resume ({{ resume_skills|length }})
             </summary>
-            <div class="skill-list" style="margin-top: 10px;">
+            <div class="skill-list details-content">
                 {% for skill in resume_skills %}
                     <span class="skill all">{{ skill }}</span>
                 {% endfor %}
             </div>
         </details>
 
-        <!-- ==================== -->
-        <!-- RAW RESUME TEXT -->
-        <!-- ==================== -->
-        <details style="margin-top: 15px;">
+        <details>
             <summary class="details-summary">
-                👁️ View Extracted Resume Text
+                View extracted resume text
             </summary>
-            <div class="text-box" style="margin-top: 10px;">{{ resume_text }}</div>
+            <div class="text-box details-content">{{ resume_text }}</div>
         </details>
 
-        <!-- Back Button -->
-        <a href="/" class="back-link">← Analyze Another Resume</a>
+        <a href="{{ url_for('home') }}" class="back-link">Analyze another resume</a>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}

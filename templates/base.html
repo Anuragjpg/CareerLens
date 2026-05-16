@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title | default('CareerLens') }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="swarm-background" data-swarm-background aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{{ url_for('home') }}" aria-label="CareerLens home">
+        <span class="logo" aria-hidden="true">CL</span>
+        <span>
+          <span class="brand-name">CareerLens</span>
+          <span class="brand-subtitle">Resume intelligence for freshers</span>
+        </span>
+      </a>
+
+      <nav class="nav" data-nav aria-label="Primary navigation">
+        <button aria-expanded="false" data-menu-btn class="menu-button" type="button">Menu</button>
+        <div class="nav-links">
+          <a href="{{ url_for('home') }}#analyzer">Analyzer</a>
+          <a href="{{ url_for('home') }}#features">What you get</a>
+          <a href="{{ url_for('home') }}#process">Process</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>CareerLens</strong>
+        <span>Built by Anurag Kushwaha</span>
+      </div>
+      <div class="footer-meta">
+        <span>Jagan College of Arts, Science and Commerce, Kanpur</span>
+        <span>&copy; {{ year }}</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='ui.js') }}" defer></script>
+  <script type="module" src="{{ url_for('static', filename='swarm-background.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
