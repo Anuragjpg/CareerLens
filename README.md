@@ -1,6 +1,4 @@
----
 
-```markdown
 # 🎯 CareerLens
 
 **AI-Powered Resume Analyzer & Skill Gap Finder**  
@@ -10,7 +8,6 @@
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
----
 
 ## 📌 Overview
 
@@ -173,3 +170,4 @@ This project is developed for educational purposes as part of a final year BCA p
 
 **Made with ❤️ for students who want to stand out.**
 ---
+=======
