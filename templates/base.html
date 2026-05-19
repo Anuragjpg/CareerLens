@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>{{ title | default('CareerLens') }}</title>
+  <title>{{ title | default('CareerLens — AI Resume Analyzer') }}</title>
+  <meta name="description" content="AI-powered resume analysis and skill gap finder for freshers and students.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script type="importmap">
     {
@@ -18,47 +19,86 @@
   </script>
 </head>
 <body>
+  <!-- 3D Particle Background -->
   <div class="swarm-background" data-swarm-background aria-hidden="true"></div>
+
+  <!-- Skip link for accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{{ url_for('home') }}" aria-label="CareerLens home">
-        <span class="logo" aria-hidden="true">CL</span>
-        <span>
+        <span class="brand-logo" aria-hidden="true">CL</span>
+        <span class="brand-text">
           <span class="brand-name">CareerLens</span>
-          <span class="brand-subtitle">Resume intelligence for freshers</span>
+          <span class="brand-subtitle">Resume intelligence</span>
         </span>
       </a>
 
       <nav class="nav" data-nav aria-label="Primary navigation">
-        <button aria-expanded="false" data-menu-btn class="menu-button" type="button">Menu</button>
+        <button aria-expanded="false" data-menu-btn class="menu-button" type="button" aria-label="Toggle navigation">
+          <span class="menu-button-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span>Menu</span>
+        </button>
         <div class="nav-links">
-          <a href="{{ url_for('home') }}#analyzer">Analyzer</a>
-          <a href="{{ url_for('home') }}#features">What you get</a>
-          <a href="{{ url_for('home') }}#process">Process</a>
+          <a href="{{ url_for('home') }}#analyzer" class="nav-link">Analyzer</a>
+          <a href="{{ url_for('home') }}#features" class="nav-link">Features</a>
+          <a href="{{ url_for('home') }}#process" class="nav-link">Process</a>
         </div>
+
+        <!-- Theme Toggle -->
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-toggle-icon" data-theme-icon aria-hidden="true">
+            <!-- Sun icon (default/dark mode shows it to allow switching to light) -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-theme-sun>
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <!-- Moon icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-theme-moon style="display:none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </button>
       </nav>
     </div>
   </header>
 
+  <!-- Main Content -->
   <main id="main">
     {% block content %}{% endblock %}
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>
-        <strong>CareerLens</strong>
-        <span>Built by Anurag Kushwaha</span>
+      <div class="footer-brand">
+        <span class="footer-logo" aria-hidden="true">CL</span>
+        <span>CareerLens</span>
       </div>
       <div class="footer-meta">
-        <span>Jagan College of Arts, Science and Commerce, Kanpur</span>
+        <span>Built by Anurag Kushwaha</span>
+        <span class="footer-divider" aria-hidden="true"></span>
+        <span>Jagan College, Kanpur</span>
+        <span class="footer-divider" aria-hidden="true"></span>
         <span>&copy; {{ year }}</span>
       </div>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="{{ url_for('static', filename='ui.js') }}" defer></script>
   <script type="module" src="{{ url_for('static', filename='swarm-background.js') }}"></script>
   {% block scripts %}{% endblock %}

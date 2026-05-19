@@ -1,175 +1,295 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- ============================================================
+     RESULTS DASHBOARD
+     ============================================================ -->
 <section class="result-shell">
-    <div class="container result-container">
-        <div class="result-hero">
-            <div>
-                <p class="eyebrow">Analysis report</p>
-                <h1>CareerLens report</h1>
-                <p class="hero-lede">A focused read on your resume quality, role fit, and next learning priorities.</p>
-            </div>
-            <div class="meta-panel" aria-label="Report details">
-                <div>
-                    <span>Target job</span>
-                    <strong>{{ job_role }}</strong>
-                </div>
-                <div>
-                    <span>Resume</span>
-                    <strong>{{ filename }}</strong>
-                </div>
-                <div>
-                    <span>Word count</span>
-                    <strong>{{ word_count }}</strong>
-                </div>
-            </div>
+  <div class="container result-container">
+
+    <!-- SVG gradient definitions for score rings -->
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <defs>
+        <linearGradient id="resume-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6366f1"/>
+          <stop offset="100%" stop-color="#818cf8"/>
+        </linearGradient>
+        <linearGradient id="ats-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22d3ee"/>
+          <stop offset="100%" stop-color="#34d399"/>
+        </linearGradient>
+        <linearGradient id="skill-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#a78bfa"/>
+          <stop offset="100%" stop-color="#fb7185"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- Result Hero -->
+    <div class="result-hero fade-in">
+      <div>
+        <p class="eyebrow">Analysis report</p>
+        <h1>CareerLens report</h1>
+        <p class="hero-lede">A focused read on your resume quality, role fit, and next learning priorities.</p>
+      </div>
+      <div class="meta-panel" aria-label="Report details">
+        <div class="meta-panel-item">
+          <span class="meta-icon" aria-hidden="true">&#x1F3AF;</span>
+          <span class="meta-info">
+            <span class="meta-label">Target job</span>
+            <span class="meta-value">{{ job_role }}</span>
+          </span>
         </div>
-
-        {% if ai and not ai.ai_error %}
-        {% if ai.fallback %}
-        <div class="warning-box">
-            <strong>AI fallback mode:</strong> {{ ai.notice }}
+        <div class="meta-panel-item">
+          <span class="meta-icon" aria-hidden="true">&#x1F4C4;</span>
+          <span class="meta-info">
+            <span class="meta-label">Resume</span>
+            <span class="meta-value">{{ filename }}</span>
+          </span>
         </div>
-        {% endif %}
-
-        <div class="score-grid">
-            <div class="score-card">
-                <div class="score-label">Resume Score</div>
-                <div class="score-value">{{ ai.resume_score }}/10</div>
-            </div>
-            <div class="score-card card-blue">
-                <div class="score-label">ATS Score</div>
-                <div class="score-value">{{ ai.ats_score }}%</div>
-            </div>
-            <div class="score-card card-green">
-                <div class="score-label">Skill Match</div>
-                <div class="score-value">{{ analysis.match_percentage }}%</div>
-            </div>
+        <div class="meta-panel-item">
+          <span class="meta-icon" aria-hidden="true">&#x1F4CA;</span>
+          <span class="meta-info">
+            <span class="meta-label">Word count</span>
+            <span class="meta-value">{{ word_count }}</span>
+          </span>
         </div>
-
-        {% if ai.summary %}
-        <div class="summary-box">
-            <strong>AI summary</strong>
-            <p>{{ ai.summary }}</p>
-        </div>
-        {% endif %}
-
-        <div class="feedback-grid">
-            <section class="insight-panel">
-                <h2>Your strengths</h2>
-                <ul class="feedback-list good">
-                    {% for item in ai.strengths %}
-                        <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-            </section>
-
-            <section class="insight-panel">
-                <h2>Areas to improve</h2>
-                <ul class="feedback-list bad">
-                    {% for item in ai.weaknesses %}
-                        <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-            </section>
-
-            <section class="insight-panel wide">
-                <h2>Specific suggestions</h2>
-                <ul class="feedback-list suggestions">
-                    {% for item in ai.suggestions %}
-                        <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-            </section>
-        </div>
-
-        {% elif ai and ai.ai_error %}
-        <div class="warning-box">
-            <strong>AI analysis error:</strong> {{ ai.error_message }}
-            <p>Skill analysis below still works without AI.</p>
-        </div>
-        {% endif %}
-
-        {% if not analysis.job_found %}
-        <div class="warning-box">
-            {{ analysis.message }}
-        </div>
-        {% endif %}
-
-        <section class="skills-section">
-            <div class="section-heading compact">
-                <p class="eyebrow">Skill match</p>
-                <h2>Skills found and gaps to close</h2>
-            </div>
-            <div class="skill-columns">
-                {% if analysis.matched %}
-                <div class="skill-panel">
-                    <h3>Skills you have <span>{{ analysis.matched|length }}</span></h3>
-                    <div class="skill-list">
-                        {% for skill in analysis.matched %}
-                            <span class="skill matched">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if analysis.missing %}
-                <div class="skill-panel">
-                    <h3>Skills to learn <span>{{ analysis.missing|length }}</span></h3>
-                    <div class="skill-list">
-                        {% for skill in analysis.missing %}
-                            <span class="skill missing">{{ skill }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </section>
-
-        {% if ai and not ai.ai_error and ai.roadmap %}
-        <section class="roadmap-section">
-            <div class="section-heading compact">
-                <p class="eyebrow">Roadmap</p>
-                <h2>Personalized learning plan</h2>
-            </div>
-            <div class="roadmap">
-                {% for item in ai.roadmap %}
-                <div class="roadmap-item">
-                    <div class="roadmap-header">
-                        <span class="roadmap-step">{{ "%02d"|format(loop.index) }}</span>
-                        <span class="roadmap-skill">{{ item.skill }}</span>
-                        <span class="priority priority-{{ item.priority|lower }}">{{ item.priority }}</span>
-                    </div>
-                    <p class="roadmap-resource"><strong>Course:</strong> {{ item.resource }}</p>
-                    <p class="roadmap-duration"><strong>Duration:</strong> {{ item.duration }}</p>
-                    {% if item.why %}
-                    <p class="roadmap-why"><strong>Why:</strong> {{ item.why }}</p>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        <details>
-            <summary class="details-summary">
-                View all skills found in resume ({{ resume_skills|length }})
-            </summary>
-            <div class="skill-list details-content">
-                {% for skill in resume_skills %}
-                    <span class="skill all">{{ skill }}</span>
-                {% endfor %}
-            </div>
-        </details>
-
-        <details>
-            <summary class="details-summary">
-                View extracted resume text
-            </summary>
-            <div class="text-box details-content">{{ resume_text }}</div>
-        </details>
-
-        <a href="{{ url_for('home') }}" class="back-link">Analyze another resume</a>
+      </div>
     </div>
+
+    <!-- AI Analysis Section -->
+    {% if ai and not ai.ai_error %}
+
+    {% if ai.fallback %}
+    <div class="warning-box fade-in">
+      <strong>AI fallback mode:</strong> {{ ai.notice }}
+    </div>
+    {% endif %}
+
+    <!-- Score Cards with Animated Rings -->
+    <div class="score-grid stagger">
+      <!-- Resume Score -->
+      <div class="score-card card-resume scale-in">
+        <div class="score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="score-ring-fill resume" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="{{ 326.73 - (326.73 * ai.resume_score / 10)|round }}"/>
+          </svg>
+          <div class="score-ring-value">{{ ai.resume_score }}<span class="score-unit">/10</span></div>
+        </div>
+        <div class="score-label">Resume Score</div>
+      </div>
+
+      <!-- ATS Score -->
+      <div class="score-card card-ats scale-in">
+        <div class="score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="score-ring-fill ats" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="{{ 326.73 - (326.73 * ai.ats_score / 100)|round }}"/>
+          </svg>
+          <div class="score-ring-value">{{ ai.ats_score }}<span class="score-unit">%</span></div>
+        </div>
+        <div class="score-label">ATS Score</div>
+      </div>
+
+      <!-- Skill Match -->
+      <div class="score-card card-skill scale-in">
+        <div class="score-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="score-ring-fill skill" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="{{ 326.73 - (326.73 * analysis.match_percentage / 100)|round }}"/>
+          </svg>
+          <div class="score-ring-value">{{ analysis.match_percentage }}<span class="score-unit">%</span></div>
+        </div>
+        <div class="score-label">Skill Match</div>
+      </div>
+    </div>
+
+    <!-- AI Summary -->
+    {% if ai.summary %}
+    <div class="summary-box fade-in">
+      <strong>AI summary</strong>
+      <p>{{ ai.summary }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Feedback Grid -->
+    <div class="feedback-grid stagger">
+      <section class="insight-panel">
+        <h2>
+          <span class="insight-icon good" aria-hidden="true">&#x2713;</span>
+          Your strengths
+        </h2>
+        <ul class="feedback-list good">
+          {% for item in ai.strengths %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="insight-panel">
+        <h2>
+          <span class="insight-icon bad" aria-hidden="true">&#x2717;</span>
+          Areas to improve
+        </h2>
+        <ul class="feedback-list bad">
+          {% for item in ai.weaknesses %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section class="insight-panel wide">
+        <h2>
+          <span class="insight-icon suggestions" aria-hidden="true">&#x2699;</span>
+          Specific suggestions
+        </h2>
+        <ul class="feedback-list suggestions">
+          {% for item in ai.suggestions %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </div>
+
+    {% elif ai and ai.ai_error %}
+    <div class="warning-box fade-in">
+      <strong>AI analysis error:</strong> {{ ai.error_message }}
+      <p>Skill analysis below still works without AI.</p>
+    </div>
+    {% endif %}
+
+    <!-- Job Not Found Warning -->
+    {% if not analysis.job_found %}
+    <div class="warning-box fade-in">
+      {{ analysis.message }}
+    </div>
+    {% endif %}
+
+    <!-- Skills Section -->
+    <section class="skills-section fade-in" id="skills">
+      <div class="section-heading compact">
+        <p class="eyebrow">Skill match</p>
+        <h2>Skills found and gaps to close</h2>
+      </div>
+      <div class="skill-columns stagger">
+        {% if analysis.matched %}
+        <div class="skill-panel">
+          <h3>
+            Skills you have
+            <span class="skill-count-matched">{{ analysis.matched|length }}</span>
+          </h3>
+          {% if analysis.match_percentage is defined %}
+          <div class="skill-match-bar">
+            <div class="skill-match-bar-fill" style="width: {{ analysis.match_percentage }}%"></div>
+          </div>
+          {% endif %}
+          <div class="skill-list">
+            {% for skill in analysis.matched %}
+            <span class="skill-tag matched">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if analysis.missing %}
+        <div class="skill-panel">
+          <h3>
+            Skills to learn
+            <span class="skill-count-missing">{{ analysis.missing|length }}</span>
+          </h3>
+          <div class="skill-list">
+            {% for skill in analysis.missing %}
+            <span class="skill-tag missing">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    {% if ai and not ai.ai_error and ai.roadmap %}
+    <section class="roadmap-section fade-in">
+      <div class="section-heading compact">
+        <p class="eyebrow">Roadmap</p>
+        <h2>Personalized learning plan</h2>
+      </div>
+      <div class="roadmap stagger">
+        {% for item in ai.roadmap %}
+        <div class="roadmap-item">
+          <span class="roadmap-step">{{ "%02d"|format(loop.index) }}</span>
+          <div class="roadmap-header">
+            <span class="roadmap-skill">{{ item.skill }}</span>
+            <span class="priority priority-{{ item.priority|lower }}">{{ item.priority }}</span>
+          </div>
+          {% if item.resource %}
+          <p class="roadmap-resource"><strong>Course:</strong> {{ item.resource }}</p>
+          {% endif %}
+          {% if item.duration %}
+          <p class="roadmap-duration"><strong>Duration:</strong> {{ item.duration }}</p>
+          {% endif %}
+          {% if item.why %}
+          <p class="roadmap-why"><strong>Why:</strong> {{ item.why }}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Collapsible Details -->
+    <details>
+      <summary class="details-summary">View all skills found in resume ({{ resume_skills|length }})</summary>
+      <div class="details-content skill-list">
+        {% for skill in resume_skills %}
+        <span class="skill-tag all">{{ skill }}</span>
+        {% endfor %}
+      </div>
+    </details>
+
+    <details>
+      <summary class="details-summary">View extracted resume text</summary>
+      <div class="details-content">
+        <div class="text-box">{{ resume_text }}</div>
+      </div>
+    </details>
+
+    <!-- Back link -->
+    <a href="{{ url_for('home') }}" class="back-link">Analyze another resume</a>
+  </div>
 </section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Animate score rings after page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const rings = document.querySelectorAll('.score-ring-fill');
+    rings.forEach(function(ring) {
+      // The offset is already set correctly by Jinja - animate on display
+      ring.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    });
+
+    // Add visible class to all fade-in/stagger elements on the results page
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in, .stagger, .scale-in').forEach(function(el) {
+      observer.observe(el);
+    });
+  });
+</script>
 {% endblock %}
