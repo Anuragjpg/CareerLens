@@ -6,6 +6,20 @@
   'use strict';
 
   // ----------------------------------------------------------
+  // View Transition AbortError handler
+  // Prevents "Uncaught (in promise)" when rapid navigation
+  // aborts the browser's auto-initiated MPA view transitions
+  // (triggered via @view-transition { navigation: auto; } in CSS)
+  // ----------------------------------------------------------
+  window.addEventListener('unhandledrejection', function (event) {
+    if (event.reason && event.reason.name === 'AbortError') {
+      // View transitions are routinely aborted when users navigate
+      // quickly or click multiple times — this is harmless.
+      event.preventDefault();
+    }
+  });
+
+  // ----------------------------------------------------------
   // Mobile menu toggle
   // ----------------------------------------------------------
   const menuBtn = document.querySelector('[data-menu-btn]');

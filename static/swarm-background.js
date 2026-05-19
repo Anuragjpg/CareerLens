@@ -13,7 +13,8 @@ if (mount && !prefersReducedMotion) {
   const AUTO_SPIN = true;
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x000000, 0.01);
+  scene.background = new THREE.Color(0x050a18);
+  scene.fog = new THREE.FogExp2(0x050a18, 0.008);
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
   camera.position.set(0, 0, 100);
@@ -36,9 +37,9 @@ if (mount && !prefersReducedMotion) {
     0.4,
     0.85,
   );
-  bloomPass.strength = 1.45;
-  bloomPass.radius = 0.36;
-  bloomPass.threshold = 0;
+  bloomPass.strength = 0.8;
+  bloomPass.radius = 0.35;
+  bloomPass.threshold = 0.05;
   composer.addPass(bloomPass);
 
   const dummy = new THREE.Object3D();
@@ -47,7 +48,7 @@ if (mount && !prefersReducedMotion) {
   const group = new THREE.Group();
   scene.add(group);
 
-  const geometry = new THREE.TetrahedronGeometry(0.25);
+  const geometry = new THREE.TetrahedronGeometry(0.16);
   const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const instancedMesh = new THREE.InstancedMesh(geometry, material, COUNT);
   instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -60,7 +61,7 @@ if (mount && !prefersReducedMotion) {
       (Math.random() - 0.5) * 100,
       (Math.random() - 0.5) * 100,
     ));
-    instancedMesh.setColorAt(i, color.setHex(0x00ff88));
+    instancedMesh.setColorAt(i, color.setHex(0x3388ff));
   }
 
   const params = {
@@ -68,7 +69,7 @@ if (mount && !prefersReducedMotion) {
     speed: 0,
     twist: 1,
     glow: 0,
-    brightness: 1,
+    brightness: 0.8,
     chaos: 0,
     layers: 0,
     pulse: 0,
@@ -177,9 +178,9 @@ if (mount && !prefersReducedMotion) {
       target.set(x, y, z);
 
       const energy = 0.5 + 0.5 * Math.sin(v * 4.0 + t * 0.7) + 0.25 * Math.cos((x + y + z) * 0.01 - t);
-      const hue = (0.56 + 0.13 * Math.sin(u * pi2 * 2.0 + t * 0.25) + 0.08 * Math.sin(v * 6.0 + pulseField) + 0.05 * energy) % 1;
+      const hue = (0.62 + 0.12 * Math.sin(u * pi2 * 2.0 + t * 0.25) + 0.06 * Math.sin(v * 6.0 + pulseField) + 0.04 * energy) % 1;
       const sat = 0.72 + 0.18 * Math.cos(v * 5.0 - t * 0.8) + 0.08 * Math.sin(u * pi2 * 11.0 + t * 1.3);
-      const litBase = 0.62 + 0.18 * Math.exp(-Math.abs(y) * 0.015) + 0.10 * Math.sin((x * x + z * z) * 0.00035 + t * 2.0) + 0.10 * bloomPulse;
+      const litBase = 0.40 + 0.12 * Math.exp(-Math.abs(y) * 0.015) + 0.06 * Math.sin((x * x + z * z) * 0.00035 + t * 2.0) + 0.05 * bloomPulse;
       const lit = litBase * brightness + glow * 0.035;
 
       color.setHSL(

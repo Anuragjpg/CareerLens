@@ -48,14 +48,14 @@
    DESIGN TOKENS
    ---------------------------------------------------------- */
 :root {
-  /* Backgrounds */
-  --bg-deep: #080a0f;
-  --bg: #0d0f17;
-  --bg-elevated: #12141e;
-  --bg-card: rgba(22, 25, 38, 0.85);
-  --bg-card-hover: rgba(26, 30, 48, 0.92);
-  --bg-glass: rgba(13, 15, 23, 0.72);
-  --bg-glass-strong: rgba(18, 20, 30, 0.88);
+  /* Backgrounds — deep blue-navy palette */
+  --bg-deep: #050a18;
+  --bg: #080d24;
+  --bg-elevated: #0c1330;
+  --bg-card: rgba(12, 22, 55, 0.85);
+  --bg-card-hover: rgba(16, 28, 65, 0.92);
+  --bg-glass: rgba(8, 14, 40, 0.72);
+  --bg-glass-strong: rgba(10, 18, 48, 0.88);
 
   /* Accent Colors */
   --primary: #6366f1;
@@ -369,9 +369,9 @@ body {
   min-height: 100vh;
   background: var(--bg-deep);
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(99, 102, 241, 0.08), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(34, 211, 238, 0.05), transparent),
-    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(167, 139, 250, 0.04), transparent),
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(99, 102, 241, 0.07), transparent),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(139, 92, 246, 0.05), transparent),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -406,9 +406,9 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99, 102, 241, 0.06), transparent),
-    radial-gradient(ellipse 50% 40% at 70% 100%, rgba(34, 211, 238, 0.04), transparent),
-    linear-gradient(180deg, rgba(8, 10, 15, 0.4), rgba(8, 10, 15, 0.85) 60%, rgba(8, 10, 15, 0.95));
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59, 130, 246, 0.07), transparent),
+    radial-gradient(ellipse 50% 40% at 70% 100%, rgba(99, 102, 241, 0.04), transparent),
+    linear-gradient(180deg, rgba(5, 10, 24, 0.45), rgba(5, 10, 24, 0.85) 60%, rgba(5, 10, 24, 0.95));
 }
 
 /* ----------------------------------------------------------
@@ -664,7 +664,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   padding: 4px 12px 4px 8px;
   background: rgba(99, 102, 241, 0.08);
   border: 1px solid rgba(99, 102, 241, 0.15);
@@ -696,7 +696,7 @@ textarea {
    HERO SECTION
    ---------------------------------------------------------- */
 .hero-section {
-  padding: var(--space-16) 0 var(--space-12);
+  padding: var(--space-10) 0 var(--space-6);
   position: relative;
   overflow: hidden;
 }
@@ -704,7 +704,7 @@ textarea {
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr minmax(400px, 470px);
-  gap: 60px;
+  gap: 32px;
   align-items: center;
 }
 
@@ -714,7 +714,7 @@ textarea {
 
 .hero-copy h1 {
   margin: 0;
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: -0.03em;
@@ -726,7 +726,7 @@ textarea {
 
 .hero-lede {
   max-width: 540px;
-  margin: 20px 0 0;
+  margin: 8px 0 0;
   font-size: 1.1rem;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -736,12 +736,12 @@ textarea {
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 40px;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .hero-stat {
-  padding: 18px 20px;
+  padding: 12px 14px;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -757,7 +757,7 @@ textarea {
 
 .hero-stat-value {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -765,8 +765,8 @@ textarea {
 
 .hero-stat-label {
   display: block;
-  margin-top: 4px;
-  font-size: 0.82rem;
+  margin-top: 2px;
+  font-size: 0.78rem;
   color: var(--text-tertiary);
   font-weight: 500;
 }
@@ -1069,12 +1069,12 @@ input[type='text']:focus {
    FEATURES SECTION
    ---------------------------------------------------------- */
 .section-block {
-  padding: var(--space-16) 0;
+  padding: var(--space-1) 0;
 }
 
 .section-heading {
   max-width: 680px;
-  margin-bottom: 32px;
+  margin-bottom: 18px;
 }
 
 .section-heading h2 {
@@ -1087,7 +1087,7 @@ input[type='text']:focus {
 }
 
 .section-heading p:not(.eyebrow) {
-  margin: 12px 0 0;
+  margin: 6px 0 0;
   color: var(--text-secondary);
   font-size: 1.05rem;
   line-height: 1.6;
@@ -1096,11 +1096,11 @@ input[type='text']:focus {
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 12px;
 }
 
 .feature-card {
-  padding: 32px 28px;
+  padding: 22px 20px;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
@@ -1136,9 +1136,9 @@ input[type='text']:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 24px;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 12px;
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.05));
   border: 1px solid rgba(99, 102, 241, 0.12);
   border-radius: var(--radius-md);
@@ -1148,7 +1148,7 @@ input[type='text']:focus {
 }
 
 .feature-card h3 {
-  margin: 0 0 12px;
+  margin: 0 0 6px;
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -1166,7 +1166,7 @@ input[type='text']:focus {
    PROCESS BAND
    ---------------------------------------------------------- */
 .process-band {
-  padding: var(--space-16) 0;
+  padding: var(--space-8) 0;
   background: linear-gradient(180deg, rgba(99, 102, 241, 0.03), rgba(34, 211, 238, 0.02));
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
@@ -1175,7 +1175,7 @@ input[type='text']:focus {
 .process-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
-  gap: 48px;
+  gap: 24px;
   align-items: start;
 }
 
@@ -1190,7 +1190,7 @@ input[type='text']:focus {
 .process-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1199,7 +1199,7 @@ input[type='text']:focus {
 
 .process-list li {
   position: relative;
-  padding: 20px;
+  padding: 12px 14px;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -1216,7 +1216,7 @@ input[type='text']:focus {
 .process-list li::before {
   content: counter(process, decimal-leading-zero);
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   font-size: 0.82rem;
   font-weight: 900;
   color: var(--primary-light);
@@ -1225,7 +1225,7 @@ input[type='text']:focus {
 
 .process-list li span {
   display: block;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
 }
@@ -2170,7 +2170,7 @@ details[open] .details-summary::before {
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 
   .hero-copy h1 {
@@ -2183,7 +2183,7 @@ details[open] .details-summary::before {
 
   .process-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
   }
 
   .process-list li:not(:last-child)::after {
@@ -2236,24 +2236,24 @@ details[open] .details-summary::before {
   }
 
   .hero-section {
-    padding: var(--space-10) 0 var(--space-8);
+    padding: var(--space-8) 0 var(--space-6);
   }
 
   .hero-stat {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .hero-stat-value {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .analyzer-card {
-    padding: 24px 20px;
+    padding: 20px 18px;
   }
 
   .feature-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 
   .process-list {
