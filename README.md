@@ -1,5 +1,4 @@
 
-```markdown
 # 🎯 CareerLens
 
 **AI-Powered Resume Analyzer & Skill Gap Finder**  
