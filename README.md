@@ -1,4 +1,3 @@
----
 
 ```markdown
 # 🎯 CareerLens
@@ -10,7 +9,6 @@
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
----
 
 ## 📌 Overview
 
